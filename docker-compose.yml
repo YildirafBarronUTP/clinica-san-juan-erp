@@ -1,0 +1,52 @@
+# Entorno local completo:  docker compose up --build
+#   Frontend  http://localhost:3000
+#   Backend   http://localhost:8080  (Swagger: /swagger-ui.html)
+#   Usuarios  admin, admision, medico, farmacia, caja  /  contraseña Clinica2026
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: csj_erp
+      POSTGRES_USER: csj
+      POSTGRES_PASSWORD: csj
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U csj -d csj_erp"]
+      interval: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/csj_erp
+      DB_USER: csj
+      DB_PASSWORD: csj
+      SEED: ${SEED:-dev}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-default}
+      CORS_ORIGINS: http://localhost:3000
+      JWT_SECRET: ${JWT_SECRET:-solo-para-desarrollo-local-cambiar-en-staging-1234567890}
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health | grep -q UP"]
+      interval: 5s
+      retries: 30
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8080
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:

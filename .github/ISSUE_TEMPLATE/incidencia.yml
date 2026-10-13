@@ -1,0 +1,60 @@
+name: Incidencia (defecto)
+description: Reportar un defecto encontrado en una prueba
+title: "[DEF] "
+labels: ["defecto"]
+body:
+  - type: input
+    id: caso
+    attributes:
+      label: Caso de prueba
+      description: ID del caso que lo detectó (ej. CP-FAR-012) o "exploratoria"
+    validations:
+      required: true
+  - type: dropdown
+    id: modulo
+    attributes:
+      label: Módulo
+      options: [Seguridad, Pacientes, Farmacia, Citas, Atención, Caja, Reportes, Frontend general]
+    validations:
+      required: true
+  - type: dropdown
+    id: severidad
+    attributes:
+      label: Severidad
+      options: [Crítica, Alta, Media, Baja]
+    validations:
+      required: true
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: Prioridad
+      options: [P1 - corregir ya, P2 - este sprint, P3 - siguiente sprint]
+    validations:
+      required: true
+  - type: dropdown
+    id: entorno
+    attributes:
+      label: Entorno
+      options: [Local, CI, Staging]
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducir
+      placeholder: "1. Ingresar como farmacia\n2. ..."
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
+  - type: textarea
+    id: obtenido
+    attributes:
+      label: Resultado obtenido
+      description: Incluya respuesta de la API, captura o enlace al reporte de CI
+    validations:
+      required: true

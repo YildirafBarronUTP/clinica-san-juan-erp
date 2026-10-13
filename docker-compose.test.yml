@@ -1,0 +1,11 @@
+# Para E2E:  docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --build
+# Activa el perfil "test" (endpoint /test-support/reset) y usa una base desechable.
+services:
+  db:
+    volumes: []
+    tmpfs:
+      - /var/lib/postgresql/data
+  backend:
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+      SEED: dev

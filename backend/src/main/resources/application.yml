@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: clinica-san-juan-erp
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/csj_erp}
+    username: ${DB_USER:csj}
+    password: ${DB_PASSWORD:csj}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+  jackson:
+    time-zone: America/Lima
+
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never
+
+app:
+  zona-horaria: America/Lima
+  jwt:
+    # Nunca usar este valor fuera de local: en Render se define JWT_SECRET (mínimo 32 caracteres).
+    secret: ${JWT_SECRET:solo-para-desarrollo-local-cambiar-en-staging-1234567890}
+    expiracion-minutos: ${JWT_EXP_MIN:120}
+  cors:
+    origenes: ${CORS_ORIGINS:http://localhost:3000}
+  seguridad:
+    max-intentos-login: 5
+    minutos-bloqueo: 15
+  farmacia:
+    dias-alerta-vencimiento: 30
+  seed:
+    # dev | demo | perf | none
+    perfil: ${SEED:none}
+    password: ${SEED_PASSWORD:Clinica2026}
+    semilla: 20261013
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
