@@ -82,6 +82,9 @@ jobs:
           else
             npx playwright test
           fi
+      - name: Instalar k6
+        if: github.event_name != 'pull_request'
+        uses: grafana/setup-k6-action@v1
       - name: Prueba de carga corta (k6 smoke)
         if: github.event_name != 'pull_request'
         uses: grafana/run-k6-action@v1
