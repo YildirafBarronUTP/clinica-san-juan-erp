@@ -2,7 +2,7 @@
 # Activa el perfil "test" (endpoint /test-support/reset) y usa una base desechable.
 services:
   db:
-    volumes: []
+    volumes: !reset []
     tmpfs:
       - /var/lib/postgresql/data
   backend:
